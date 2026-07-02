@@ -28,6 +28,14 @@ RUN docker-php-ext-install pdo_mysql mbstring curl
 
 RUN a2enmod headers
 
+# mod_php is not thread-safe and requires the prefork MPM. The base image
+# already enables mpm_prefork, but Debian's apache2 package scripts can
+# re-enable the default mpm_event alongside it as a side effect of the
+# apt-get install above, leaving both loaded — which Apache refuses to
+# start with ("More than one MPM loaded"). Force prefork only.
+RUN a2dismod mpm_event mpm_worker 2>/dev/null; a2enmod mpm_prefork
+
+
 # ── Python dependencies ──────────────────────────────────────────────────
 COPY python/requirements.txt /tmp/requirements.txt
 # Debian bookworm's pip refuses system-wide installs by default (PEP 668);
