@@ -1,0 +1,765 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     STUDIZ — Compiled Production Entry Point
+     All section files merged into one master index.html.
+     Backend gateway calls (PHP/MySQL) remain untouched in app.js.
+     Only the /studiz/ local-dev path prefix has been normalised to / for VPS.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Studizz — AI-powered study assistant. Upload documents, generate summaries, quizzes, and chat with an AI tutor." />
+  <meta name="theme-color" content="#080810" />
+  <title>Studizz — Study Smarter</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet" />
+  <!-- Design system -->
+  <link rel="stylesheet" href="/public/css/linear.css" />
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     MODALS
+     ═══════════════════════════════════════════════ -->
+
+<!-- ONBOARDING MODAL -->
+<div id="onboarding-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="onboard-title">
+  <div class="lnr-modal">
+
+    <div class="lnr-modal-brand">
+      <div class="lnr-modal-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="10" stroke="url(#mg)" stroke-width="1.5"/>
+          <circle cx="11" cy="11" r="4" fill="url(#mg2)"/>
+          <defs>
+            <linearGradient id="mg" x1="0" y1="0" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#818cf8"/><stop offset="1" stop-color="#6366f1"/>
+            </linearGradient>
+            <linearGradient id="mg2" x1="7" y1="7" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#a5b4fc"/><stop offset="1" stop-color="#6366f1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="lnr-modal-wordmark">Studizz</span>
+    </div>
+
+    <h2 id="onboard-title" class="lnr-modal-title">Create your account</h2>
+    <p class="lnr-modal-sub">Your AI study partner. Takes 30 seconds.</p>
+
+    <div id="onboard-error" class="lnr-error" role="alert"></div>
+
+    <form id="onboard-form" class="lnr-form" novalidate>
+      <div class="lnr-field-row">
+        <div class="lnr-field">
+          <label class="lnr-label" for="ob-name">Full Name</label>
+          <input id="ob-name" name="name" type="text" class="lnr-input"
+                 placeholder="Tise Oladoye" required autocomplete="name" />
+        </div>
+        <div class="lnr-field">
+          <label class="lnr-label" for="ob-username">Username</label>
+          <input id="ob-username" name="username" type="text" class="lnr-input"
+                 placeholder="tise_studies" required autocomplete="username" />
+        </div>
+      </div>
+      <div class="lnr-field">
+        <label class="lnr-label" for="ob-class">Class / Year</label>
+        <input id="ob-class" name="class" type="text" class="lnr-input"
+               placeholder="SS3 / Year 12 / 300L" required />
+      </div>
+      <div class="lnr-field">
+        <label class="lnr-label" for="ob-email">Email Address</label>
+        <input id="ob-email" name="email" type="email" class="lnr-input"
+               placeholder="you@email.com" required autocomplete="email" />
+      </div>
+      <div class="lnr-field">
+        <label class="lnr-label" for="ob-phone">Phone Number</label>
+        <input id="ob-phone" name="phone" type="tel" class="lnr-input"
+               placeholder="+234 800 000 0000" required autocomplete="tel" />
+      </div>
+      <button type="submit" class="lnr-btn lnr-btn-primary lnr-btn-full">
+        Get started <span class="lnr-btn-arrow">→</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- FOLDER CREATION MODAL -->
+<div id="folder-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="folder-modal-title">
+  <div class="lnr-modal lnr-modal-sm">
+    <h3 id="folder-modal-title" class="lnr-modal-title" style="font-size:1.1rem">New Folder</h3>
+    <form id="folder-form" class="lnr-form" novalidate>
+      <div class="lnr-field">
+        <label class="lnr-label" for="folder-name-input">Folder name</label>
+        <input id="folder-name-input" type="text" class="lnr-input"
+               placeholder="e.g. Biology Notes" required maxlength="120" />
+      </div>
+      <div class="lnr-field">
+        <label class="lnr-label" for="folder-color-input">Colour</label>
+        <input id="folder-color-input" type="color" value="#6366f1" class="lnr-color-input" />
+      </div>
+      <div class="lnr-modal-actions">
+        <button type="submit" class="lnr-btn lnr-btn-primary lnr-btn-sm">Create folder</button>
+        <button type="button" id="close-folder-modal" class="lnr-btn lnr-btn-ghost lnr-btn-sm">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CHANGE USERNAME MODAL -->
+<div id="username-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="username-modal-title">
+  <div class="lnr-modal lnr-modal-sm">
+    <h3 id="username-modal-title" class="lnr-modal-title" style="font-size:1.1rem">Change Username</h3>
+    <div id="username-modal-error" class="lnr-error" role="alert"></div>
+    <form id="username-form" class="lnr-form" novalidate>
+      <div class="lnr-field">
+        <label class="lnr-label" for="username-input">New username</label>
+        <input id="username-input" type="text" class="lnr-input"
+               placeholder="tise_studies" required maxlength="60" autocomplete="username" />
+      </div>
+      <div class="lnr-modal-actions">
+        <button type="submit" class="lnr-btn lnr-btn-primary lnr-btn-sm">Save</button>
+        <button type="button" id="close-username-modal" class="lnr-btn lnr-btn-ghost lnr-btn-sm">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     NAVIGATION BAR
+     ═══════════════════════════════════════════════ -->
+<header class="lnr-nav" id="lnr-nav">
+  <div class="lnr-nav-inner">
+
+    <!-- LEFT: Logo
+         ✏️  MASTER LOGO — replace src="" with your logo file path.
+              Example:  src="/public/assets/logo.png"
+              The onerror handler shows the text fallback if the image
+              is missing, so the nav never breaks during development. -->
+    <div class="lnr-nav-left">
+      <a class="lnr-nav-logo" href="#" data-page="home" aria-label="Studizz home">
+        <img
+          src=""
+          alt="Studizz logo"
+          class="lnr-logo-img"
+          id="site-logo"
+          onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'"
+        />
+        <!-- Text fallback shown when no logo image is set -->
+        <span class="lnr-logo-fallback" id="logo-fallback">
+          <span class="lnr-logo-mark"></span>
+          Studizz
+        </span>
+      </a>
+    </div>
+
+    <!-- CENTRE: Nav links -->
+    <nav aria-label="Main navigation">
+      <ul class="lnr-nav-links" id="nav-links">
+        <li><a href="#" data-page="home"     class="lnr-nav-link">Home</a></li>
+        <li><a href="#" data-page="features" class="lnr-nav-link">Features</a></li>
+        <li><a href="#" data-page="study"    class="lnr-nav-link">Study</a></li>
+        <li><a href="#" data-page="store"    class="lnr-nav-link">Store</a></li>
+        <li><a href="#" data-page="chatbot"  class="lnr-nav-link">AI Chat</a></li>
+      </ul>
+    </nav>
+
+    <!-- RIGHT: User chip + logout + CTA -->
+    <div class="lnr-nav-right">
+      <div class="lnr-nav-user" id="nav-user-chip" role="button" tabindex="0"
+           title="Click to change your username" aria-label="Change username">
+        <div class="lnr-avatar" id="nav-avatar">?</div>
+        <span id="nav-user" class="lnr-nav-username"></span>
+      </div>
+      <button class="lnr-btn lnr-btn-ghost lnr-btn-sm lnr-nav-logout" id="logout-btn"
+              hidden aria-label="Sign out of Studizz">
+        Sign out
+      </button>
+      <button class="lnr-btn lnr-btn-primary lnr-btn-sm" data-page="study">
+        Start studying
+      </button>
+      <!-- Mobile hamburger -->
+      <button class="lnr-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN APPLICATION SHELL
+     ═══════════════════════════════════════════════ -->
+<main id="app">
+
+  <!-- ── PAGE: HOME ──────────────────────────────── -->
+  <div id="page-home" class="page">
+
+    <!-- HERO -->
+    <section class="lnr-hero">
+      <div class="lnr-hero-mesh" aria-hidden="true">
+        <div class="mesh-blob mesh-blob-1"></div>
+        <div class="mesh-blob mesh-blob-2"></div>
+        <div class="mesh-blob mesh-blob-3"></div>
+        <div class="mesh-grid"></div>
+      </div>
+
+      <div class="lnr-container">
+        <div class="lnr-hero-content">
+
+          <div class="lnr-badge">
+            <span class="lnr-badge-dot"></span>
+            AI-Powered Study Platform
+          </div>
+
+          <h1 class="lnr-hero-title">
+            Study less.<br />
+            <span class="lnr-gradient-text">Understand more.</span>
+          </h1>
+
+          <p class="lnr-hero-sub">
+            Upload any document or image. Studizz extracts the content,
+            generates crisp summaries, builds interactive quizzes, and
+            connects you with a live AI tutor — all in one place.
+          </p>
+
+          <div class="lnr-hero-cta">
+            <button class="lnr-btn lnr-btn-primary lnr-btn-lg" data-page="study">
+              Start studying <span class="lnr-btn-arrow">→</span>
+            </button>
+            <button class="lnr-btn lnr-btn-ghost lnr-btn-lg" data-page="features">
+              See all features
+            </button>
+          </div>
+
+          <div class="lnr-hero-proof">
+            <div class="lnr-proof-avatars">
+              <div class="lnr-proof-avatar" style="background:linear-gradient(135deg,#818cf8,#6366f1)">A</div>
+              <div class="lnr-proof-avatar" style="background:linear-gradient(135deg,#34d399,#059669)">B</div>
+              <div class="lnr-proof-avatar" style="background:linear-gradient(135deg,#f472b6,#db2777)">C</div>
+            </div>
+            <span class="lnr-proof-text">Join students already studying smarter</span>
+          </div>
+        </div>
+
+        <!-- Hero visual: floating card mockup -->
+        <div class="lnr-hero-visual" aria-hidden="true">
+          <div class="lnr-mock-card">
+            <div class="lnr-mock-header">
+              <div class="lnr-mock-dot" style="background:#ef4444"></div>
+              <div class="lnr-mock-dot" style="background:#f59e0b"></div>
+              <div class="lnr-mock-dot" style="background:#22c55e"></div>
+              <span class="lnr-mock-title">AI Summary</span>
+            </div>
+            <div class="lnr-mock-body">
+              <div class="lnr-mock-line lnr-mock-line-full"></div>
+              <div class="lnr-mock-line lnr-mock-line-full"></div>
+              <div class="lnr-mock-line lnr-mock-line-75"></div>
+              <div class="lnr-mock-spacer"></div>
+              <div class="lnr-mock-chips">
+                <div class="lnr-mock-chip lnr-chip-indigo">Summary</div>
+                <div class="lnr-mock-chip lnr-chip-green">Key Points</div>
+                <div class="lnr-mock-chip lnr-chip-purple">Quiz</div>
+              </div>
+              <div class="lnr-mock-spacer"></div>
+              <div class="lnr-mock-line lnr-mock-line-full"></div>
+              <div class="lnr-mock-line lnr-mock-line-50"></div>
+              <div class="lnr-mock-progress">
+                <div class="lnr-mock-progress-fill"></div>
+              </div>
+              <div class="lnr-mock-score">Score: 8 / 10 &nbsp;✓</div>
+            </div>
+          </div>
+          <div class="lnr-float-badge lnr-float-1">📄 PDF extracted</div>
+          <div class="lnr-float-badge lnr-float-2">🧠 Quiz ready</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGO STRIP -->
+    <div class="lnr-strip">
+      <div class="lnr-container">
+        <p class="lnr-strip-label">Built on</p>
+        <div class="lnr-strip-logos">
+          <span class="lnr-strip-item">OpenAI GPT-4o</span>
+          <span class="lnr-strip-divider">·</span>
+          <span class="lnr-strip-item">Tesseract OCR</span>
+          <span class="lnr-strip-divider">·</span>
+          <span class="lnr-strip-item">YouTube Data API</span>
+          <span class="lnr-strip-divider">·</span>
+          <span class="lnr-strip-item">PHP 8 · MySQL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSION SECTION -->
+    <section class="lnr-section">
+      <div class="lnr-container">
+        <div class="lnr-split">
+          <div class="lnr-split-text">
+            <div class="lnr-eyebrow">Our Mission</div>
+            <h2 class="lnr-section-title">Built for students who want real results</h2>
+            <p class="lnr-section-body">
+              Traditional study methods are broken. Students spend hours re-reading
+              textbooks and still struggle to recall what matters most. Studizz fixes that.
+            </p>
+            <p class="lnr-section-body">
+              By combining OCR document parsing, large language model summarisation,
+              and quiz-based active recall, Studizz turns any study material into a
+              complete, interactive study session in under 90 seconds.
+            </p>
+            <button class="lnr-btn lnr-btn-outline" style="margin-top:28px" data-page="study">
+              Try it now →
+            </button>
+          </div>
+          <div class="lnr-split-visual">
+            <div class="lnr-img-frame">
+              <!-- ✏️  Replace src with your own image path if desired -->
+              <img
+                src="/public/images/students-collaborating.jpg"
+                alt="Students collaborating on campus"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="lnr-section" style="padding-top:0">
+      <div class="lnr-container">
+        <div class="lnr-stats-grid">
+          <div class="lnr-stat">
+            <div class="lnr-stat-num">4</div>
+            <div class="lnr-stat-label">AI-powered study tools</div>
+          </div>
+          <div class="lnr-stat">
+            <div class="lnr-stat-num">90s</div>
+            <div class="lnr-stat-label">Average processing time</div>
+          </div>
+          <div class="lnr-stat">
+            <div class="lnr-stat-num">∞</div>
+            <div class="lnr-stat-label">Documents you can store</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GOALS / MINI FEATURES -->
+    <section class="lnr-section" style="padding-top:0">
+      <div class="lnr-container">
+        <div class="lnr-section-header">
+          <div class="lnr-eyebrow">Platform Goals</div>
+          <h2 class="lnr-section-title">What Studizz is designed to do</h2>
+        </div>
+        <div class="lnr-cards-grid">
+          <div class="lnr-card">
+            <div class="lnr-card-icon">🎯</div>
+            <h3 class="lnr-card-title">Eliminate passive reading</h3>
+            <p class="lnr-card-body">Transform flat text into active, testable knowledge through AI-generated quizzes built directly from your material.</p>
+          </div>
+          <div class="lnr-card">
+            <div class="lnr-card-icon">⏱</div>
+            <h3 class="lnr-card-title">Save time ruthlessly</h3>
+            <p class="lnr-card-body">Get a crisp, focused summary in under 90 seconds instead of spending hours condensing notes manually.</p>
+          </div>
+          <div class="lnr-card">
+            <div class="lnr-card-icon">🗂</div>
+            <h3 class="lnr-card-title">Build a study archive</h3>
+            <p class="lnr-card-body">Every summary is permanently stored and organised into custom folders you can revisit, quiz from, and search anytime.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-home -->
+
+  <!-- ── PAGE: FEATURES ──────────────────────────── -->
+  <div id="page-features" class="page">
+    <section class="lnr-section">
+      <div class="lnr-container">
+
+        <div class="lnr-section-header">
+          <div class="lnr-eyebrow">Everything Included</div>
+          <h2 class="lnr-section-title">Every tool built into Studizz</h2>
+          <p class="lnr-section-lead">One platform. No subscriptions to juggle. Everything you need to go from raw document to tested knowledge.</p>
+        </div>
+
+        <!-- Study Module -->
+        <div class="lnr-feature-group">
+          <div class="lnr-feature-group-label">Study Module</div>
+          <div class="lnr-cards-grid lnr-cards-grid-4">
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">📄</div>
+              <h3 class="lnr-card-title">Document Upload</h3>
+              <p class="lnr-card-body">Drag-and-drop PDFs, JPG scans, or PNG images up to 20 MB. Studizz detects digital text and uses OCR for scanned pages.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🧠</div>
+              <h3 class="lnr-card-title">AI Summarisation</h3>
+              <p class="lnr-card-body">GPT-4o-mini produces a 3–5 paragraph academic overview that captures the core argument and key conclusions of any document.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🔑</div>
+              <h3 class="lnr-card-title">Key Points</h3>
+              <p class="lnr-card-body">Six to ten concise bullet points pulled directly from the summary — perfect for last-minute revision the night before an exam.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">📝</div>
+              <h3 class="lnr-card-title">Interactive Quiz</h3>
+              <p class="lnr-card-body">Ten MCQs generated from your document. Select answers, submit, and receive instant grading with explanations for every question.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🏆</div>
+              <h3 class="lnr-card-title">Score Metrics</h3>
+              <p class="lnr-card-body">An animated score ring shows your percentage. Below it, every question is reviewed with your answer, the correct answer, and a rationale.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">▶️</div>
+              <h3 class="lnr-card-title">YouTube Recommendations</h3>
+              <p class="lnr-card-body">Studizz queries YouTube for the four most relevant educational videos on your document's topic and stores them permanently with your summary.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Store Module -->
+        <div class="lnr-feature-group">
+          <div class="lnr-feature-group-label">Store Module</div>
+          <div class="lnr-cards-grid lnr-cards-grid-4">
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🗂</div>
+              <h3 class="lnr-card-title">Summaries Archive</h3>
+              <p class="lnr-card-body">Every generated summary is automatically archived with file name, creation date, and a preview — searchable and accessible anytime.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">📁</div>
+              <h3 class="lnr-card-title">Custom Folders</h3>
+              <p class="lnr-card-body">Create colour-coded folders (Biology, History, Maths…) and organise summaries into them. Full create, rename, recolour, and delete support.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🗃</div>
+              <h3 class="lnr-card-title">Folder-Wide Quiz</h3>
+              <p class="lnr-card-body">Select any folder and generate a single comprehensive 15-question quiz that spans every summary inside — ideal for cumulative exam prep.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Chatbot -->
+        <div class="lnr-feature-group">
+          <div class="lnr-feature-group-label">AI Chatbot</div>
+          <div class="lnr-cards-grid lnr-cards-grid-4">
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🤖</div>
+              <h3 class="lnr-card-title">Studizz AI Chatbot</h3>
+              <p class="lnr-card-body">A persistent, multi-turn conversational assistant that answers study questions, explains concepts, and guides you through the platform.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🔢</div>
+              <h3 class="lnr-card-title">Daily Query Counter</h3>
+              <p class="lnr-card-body">A live counter shows exactly how many of your 15 daily queries remain. The input locks automatically when the limit is reached.</p>
+            </div>
+            <div class="lnr-card lnr-card-glow">
+              <div class="lnr-card-icon">🔒</div>
+              <h3 class="lnr-card-title">Private by Design</h3>
+              <p class="lnr-card-body">Zero API keys on the client. All AI calls route through a secure PHP backend. Your profile is stored only in the server database, never in your browser.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div><!-- /page-features -->
+
+  <!-- ── PAGE: STUDY ──────────────────────────────── -->
+  <div id="page-study" class="page">
+    <section class="lnr-section">
+      <div class="lnr-container">
+
+        <div class="lnr-page-header">
+          <div class="lnr-eyebrow">Study Module</div>
+          <h2 class="lnr-section-title">Upload a document to begin</h2>
+          <p class="lnr-section-lead" style="max-width:520px">
+            Drop any document below — PDF, Word, PowerPoint, Excel, text, or image — or paste a
+            link. Studizz will extract the text, summarise it, generate a quiz, and recommend
+            videos — automatically.
+          </p>
+        </div>
+
+        <div class="lnr-study-layout">
+
+          <!-- Upload zone -->
+          <div class="lnr-upload-col">
+            <div class="lnr-upload-zone" id="upload-zone" role="button" tabindex="0"
+                 aria-label="Upload a document">
+              <div class="lnr-upload-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <h3 class="lnr-upload-title">Drop your file here</h3>
+              <p class="lnr-upload-sub">or click to browse from your device</p>
+              <div class="lnr-upload-tags">
+                <span class="lnr-tag">PDF</span>
+                <span class="lnr-tag">DOCX</span>
+                <span class="lnr-tag">PPT/PPTX</span>
+                <span class="lnr-tag">XLSX/XLS</span>
+                <span class="lnr-tag">TXT</span>
+                <span class="lnr-tag">Images</span>
+                <span class="lnr-tag">Max 20 MB</span>
+              </div>
+              <input type="file" id="file-input" />
+            </div>
+
+            <!-- Paste-a-link -->
+            <div class="lnr-url-divider"><span>or paste a link</span></div>
+            <div class="lnr-url-input-row">
+              <input type="url" id="document-url-input" class="lnr-input"
+                     placeholder="https://example.com/article-or-file" />
+              <button type="button" id="process-url-btn" class="lnr-btn lnr-btn-primary lnr-btn-sm">
+                Fetch
+              </button>
+            </div>
+            <p class="lnr-upload-sub" style="margin-top:6px;font-size:0.78rem">
+              Articles, PDFs, or Word/PowerPoint/Excel links — not video pages.
+            </p>
+
+            <!-- Folder selector (shown by JS when folders exist) -->
+            <div id="folder-assign-wrap" style="margin-top:16px;display:none">
+              <div class="lnr-field">
+                <label class="lnr-label" for="upload-folder-select">Save to folder (optional)</label>
+                <select id="upload-folder-select" class="lnr-input lnr-select">
+                  <option value="">— No folder —</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results panel — populated by app.js -->
+          <div id="study-results" class="study-results lnr-results-panel"></div>
+
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-study -->
+
+  <!-- ── PAGE: STORE ──────────────────────────────── -->
+  <div id="page-store" class="page">
+    <section class="lnr-section">
+      <div class="lnr-container">
+
+        <div class="lnr-page-header lnr-page-header-row">
+          <div>
+            <div class="lnr-eyebrow">Store</div>
+            <h2 class="lnr-section-title" style="margin-bottom:0">Your Study Archive</h2>
+          </div>
+          <div class="lnr-page-header-actions">
+            <button class="lnr-btn lnr-btn-outline lnr-btn-sm" id="folder-quiz-btn">
+              📝 Quiz this folder
+            </button>
+            <button class="lnr-btn lnr-btn-primary lnr-btn-sm" id="add-folder-btn">
+              + New folder
+            </button>
+          </div>
+        </div>
+
+        <div class="lnr-store-layout">
+
+          <!-- Sidebar: folders -->
+          <aside class="lnr-sidebar">
+            <div class="lnr-sidebar-head">Folders</div>
+            <div class="folder-list" id="folder-list">
+              <p style="font-size:0.82rem;color:var(--lnr-muted);padding:8px 0">Loading…</p>
+            </div>
+          </aside>
+
+          <!-- Main: summaries grid -->
+          <div class="lnr-store-main">
+            <div class="summaries-grid" id="summaries-grid">
+              <div class="lnr-empty" style="grid-column:1/-1">
+                <div class="lnr-empty-icon">📂</div>
+                <h4>No summaries yet</h4>
+                <p>Upload a document in the Study section to create your first summary.</p>
+                <button class="lnr-btn lnr-btn-primary lnr-btn-sm" style="margin-top:16px" data-page="study">
+                  Go to Study →
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-store -->
+
+  <!-- ── PAGE: CHATBOT ─────────────────────────────── -->
+  <div id="page-chatbot" class="page">
+    <section class="lnr-section-sm">
+      <div class="lnr-container">
+
+        <div class="lnr-page-header lnr-page-header-row">
+          <div>
+            <div class="lnr-eyebrow">AI Assistant</div>
+            <h2 class="lnr-section-title" style="margin-bottom:0">Studizz AI Chatbot</h2>
+          </div>
+          <div class="lnr-quota-badge" id="chat-quota">
+            <span>15</span> / 15 queries today
+          </div>
+        </div>
+
+        <div class="lnr-chat-shell">
+
+          <div class="lnr-chat-topbar">
+            <div class="lnr-chat-identity">
+              <div class="lnr-chat-avatar">🤖</div>
+              <div>
+                <div class="lnr-chat-name">Studizz AI</div>
+                <div class="lnr-chat-status">
+                  <span class="lnr-status-dot"></span>Online
+                </div>
+              </div>
+            </div>
+            <span class="lnr-chat-hint">Ask anything about your studies</span>
+          </div>
+
+          <!-- Message feed — populated by app.js -->
+          <div class="chat-messages lnr-chat-feed" id="chat-messages">
+            <div class="chat-empty lnr-chat-empty">
+              <div class="chat-empty-icon">💬</div>
+              <h4>Start a conversation</h4>
+              <p>Ask me to explain a concept, summarise a topic, or guide you through using Studizz.</p>
+            </div>
+          </div>
+
+          <!-- Input bar -->
+          <div class="lnr-chat-inputbar">
+            <textarea
+              id="chat-input"
+              class="chat-input lnr-chat-input"
+              placeholder="Ask Studizz AI anything…"
+              rows="1"
+              maxlength="2000"
+              aria-label="Chat message"
+            ></textarea>
+            <button id="chat-send-btn" class="chat-send-btn lnr-send-btn" aria-label="Send">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-chatbot -->
+
+</main><!-- /app -->
+
+<!-- ═══════════════════════════════════════════════
+     GLOBAL FOOTER
+     ═══════════════════════════════════════════════ -->
+<footer class="lnr-footer" id="global-footer">
+  <div class="lnr-container">
+
+    <div class="lnr-footer-grid">
+
+      <!-- Brand column -->
+      <div class="lnr-footer-brand">
+        <div class="lnr-footer-logo">Studizz<span class="lnr-logo-accent">.</span></div>
+        <p class="lnr-footer-tagline">
+          AI-powered study tools for students who want to understand deeply,
+          not just memorise.
+        </p>
+      </div>
+
+      <!-- Platform links -->
+      <div>
+        <div class="lnr-footer-heading">Platform</div>
+        <ul class="lnr-footer-links">
+          <li><a href="#" data-page="home">Home</a></li>
+          <li><a href="#" data-page="features">Features</a></li>
+          <li><a href="#" data-page="study">Study</a></li>
+          <li><a href="#" data-page="store">Store</a></li>
+          <li><a href="#" data-page="chatbot">AI Chatbot</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact / Social -->
+      <div>
+        <div class="lnr-footer-heading">Contact Us</div>
+        <div class="lnr-social-grid">
+
+          <a class="lnr-social-link" href="https://instagram.com/itsnot_tishe"
+             target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+            @itsnot_tishe
+          </a>
+
+          <a class="lnr-social-link" href="https://tiktok.com/@itsnot_tishe"
+             target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.79 1.53V6.76a4.85 4.85 0 01-1.02-.07z"/>
+            </svg>
+            @itsnot_tishe
+          </a>
+
+          <a class="lnr-social-link" href="mailto:oladoyetise@gmail.com" aria-label="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <polyline points="2,4 12,13 22,4"/>
+            </svg>
+            oladoyetise@gmail.com
+          </a>
+
+          <a class="lnr-social-link" href="https://wa.me/2347061496887"
+             target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.958 9.958 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.079-1.117l-.29-.174-3.007.895.895-3.007-.174-.29A8 8 0 1112 20z"/>
+            </svg>
+            +234 706 149 6887
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="lnr-footer-bottom">
+      <span>© <span id="footer-year"></span> Studizz. All rights reserved.</span>
+      <span>Built with ❤ for learners everywhere.</span>
+    </div>
+
+  </div>
+</footer>
+
+<!-- Toast notification container -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+     app.js contains all SPA routing, API calls to the
+     PHP backend gateways, and UI event handlers.
+     Nothing here should be changed — all backend
+     endpoint configuration lives inside app.js.
+     ═══════════════════════════════════════════════ -->
+<script src="/public/js/app.js"></script>
+
+</body>
+</html>

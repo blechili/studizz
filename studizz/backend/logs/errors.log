@@ -1,0 +1,244 @@
+ 
+[DEBUG] process_document started[2026-06-26 14:04:28] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: 81657b4bdc7c14177066e41cadf33ce0.pdf
+[extract_text] 1 page(s) require OCR.
+[extract_text] Extraction failed: tesseract is not installed or it's not in your PATH. See README file for more information.
+[extract_text] Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 275, in run_tesseract
+    proc = subprocess.Popen(cmd_args, **subprocess_args())
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 1553, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                             # no special security
+                             ^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                             cwd,
+                             ^^^^
+                             startupinfo)
+                             ^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 155, in main
+    text = extract_from_pdf(file_path)
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 73, in extract_from_pdf
+    ocr_text  = pytesseract.image_to_string(image, lang="eng")
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 486, in image_to_string
+    return {
+           ~
+    ...<2 lines>...
+        Output.STRING: lambda: run_and_get_output(*args),
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }[output_type]()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 489, in <lambda>
+    Output.STRING: lambda: run_and_get_output(*args),
+                           ~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 352, in run_and_get_output
+    run_tesseract(**kwargs)
+    ~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 280, in run_tesseract
+    raise TesseractNotFoundError()
+pytesseract.pytesseract.TesseractNotFoundError: tesseract is not installed or it's not in your PATH. See README file for more information.
+
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[DEBUG] Python done. Text length: 16143[DEBUG] Calling OpenAI now[2026-06-26 14:05:13] [OpenAI] OpenAI API error 400: We could not parse the JSON body of your request. (HINT: This likely means you aren't using your HTTP library correctly. The OpenAI API expects a JSON payload, but what was sent was not valid JSON. If you have trouble figuring out how to fix this, please contact us through our help center at help.openai.com.)
+[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 16143[DEBUG] Calling OpenAI now[DEBUG] process_document started[2026-06-26 14:30:44] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing IMAGE: 885ba0ba2a6dcb9a55a39f84893a96a9.png
+[extract_text] Extraction failed: tesseract is not installed or it's not in your PATH. See README file for more information.
+[extract_text] Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 275, in run_tesseract
+    proc = subprocess.Popen(cmd_args, **subprocess_args())
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 1553, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                             # no special security
+                             ^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                             cwd,
+                             ^^^^
+                             startupinfo)
+                             ^^^^^^^^^^^^
+FileNotFoundError: [WinError 2] The system cannot find the file specified
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 157, in main
+    text = extract_from_image(file_path)
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 109, in extract_from_image
+    text = pytesseract.image_to_string(image, lang="eng", config="--psm 6")
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 486, in image_to_string
+    return {
+           ~
+    ...<2 lines>...
+        Output.STRING: lambda: run_and_get_output(*args),
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }[output_type]()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 489, in <lambda>
+    Output.STRING: lambda: run_and_get_output(*args),
+                           ~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 352, in run_and_get_output
+    run_tesseract(**kwargs)
+    ~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pytesseract\pytesseract.py", line 280, in run_tesseract
+    raise TesseractNotFoundError()
+pytesseract.pytesseract.TesseractNotFoundError: tesseract is not installed or it's not in your PATH. See README file for more information.
+
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[2026-06-26 15:36:35] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: 38eecae7c31862f0ef110bb93dcecd9c.pdf
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 174, in <module>
+    main()
+    ~~~~^^
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 168, in main
+    sys.stdout.write(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2011' in position 4419: character maps to <undefined>
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[2026-06-26 15:38:20] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: d7a9cd2dd19175f6327a5bb39442770c.pdf
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 174, in <module>
+    main()
+    ~~~~^^
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 168, in main
+    sys.stdout.write(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2011' in position 4419: character maps to <undefined>
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[2026-06-26 15:45:24] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: 68c454cbad57c13f3018ebcbdebb17a5.pdf
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 174, in <module>
+    main()
+    ~~~~^^
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 168, in main
+    sys.stdout.write(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25cf' in position 16969: character maps to <undefined>
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[2026-06-27 18:30:15] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: b8954b477e8b64f0df9d137826d16759.pdf
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 174, in <module>
+    main()
+    ~~~~^^
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 168, in main
+    sys.stdout.write(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25cf' in position 16969: character maps to <undefined>
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[2026-06-27 18:44:26] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: 89ed636d51100512682877643fa70aea.pdf
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 177, in <module>
+    main()
+    ~~~~^^
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 171, in main
+    sys.stdout.write(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25cf' in position 16969: character maps to <undefined>
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[2026-06-27 18:48:41] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing PDF: a8fa3e2e29da3c474acb7eb2cd699511.pdf
+Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 177, in <module>
+    main()
+    ~~~~^^
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 171, in main
+    sys.stdout.write(text)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25cf' in position 16969: character maps to <undefined>
+
+[DEBUG] Python done. Text length: 4[DEBUG] process_document started[DEBUG] Python done. Text length: 105835[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 828381[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 105835[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] process_document started[DEBUG] Python done. Text length: 128[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] process_document started[DEBUG] Python done. Text length: 128[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] process_document started[DEBUG] Python done. Text length: 128[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 275305[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] process_document started[DEBUG] Python done. Text length: 128[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 2897[DEBUG] process_document started[DEBUG] Python done. Text length: 128[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 37610[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] process_document started[DEBUG] Python done. Text length: 471[DEBUG] Calling OpenAI now[DEBUG] Python done. Text length: 471[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 471[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 471[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 25437[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 14431[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 573[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 81[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 0[DEBUG] process_document started[DEBUG] Python done. Text length: 0[DEBUG] process_document started[DEBUG] Python done. Text length: 0[DEBUG] process_document started[DEBUG] Python done. Text length: 0[DEBUG] process_document started[DEBUG] Python done. Text length: 0[DEBUG] process_document started[DEBUG] Python done. Text length: 5235[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 287[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Python done. Text length: 19665[DEBUG] Calling OpenAI now[DEBUG] process_document started[2026-06-29 13:09:09] [gateway] Python extractor exited with code 1. Stderr: [extract_text] Processing as XLSX (original ext: .xlsx)
+[extract_text] Extraction failed: openpyxl does not support .upload file format, please check you can open it with Excel first. Supported formats are: .xlsx,.xlsm,.xltx,.xltm
+[extract_text] Traceback (most recent call last):
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 449, in main
+    text = extract_from_xlsx(file_path)
+  File "C:\xampp\htdocs\studiz\python\extract_text.py", line 236, in extract_from_xlsx
+    wb = openpyxl.load_workbook(path, data_only=True, read_only=True)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\openpyxl\reader\excel.py", line 346, in load_workbook
+    reader = ExcelReader(filename, read_only, keep_vba,
+                         data_only, keep_links, rich_text)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\openpyxl\reader\excel.py", line 123, in __init__
+    self.archive = _validate_archive(fn)
+                   ~~~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\openpyxl\reader\excel.py", line 93, in _validate_archive
+    raise InvalidFileException(msg)
+openpyxl.utils.exceptions.InvalidFileException: openpyxl does not support .upload file format, please check you can open it with Excel first. Supported formats are: .xlsx,.xlsm,.xltx,.xltm
+
+
+[DEBUG] process_document started[DEBUG] Extraction done. Text length: 179[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] Extraction done. Text length: 179[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] Extraction done. Text length: 93808[DEBUG] Calling OpenAI now[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] process_document started[DEBUG] Extraction done. Text length: 828381[DEBUG] process_document started[DEBUG] Extraction done. Text length: 5224[DEBUG] Calling OpenAI now[2026-07-02 01:20:47] [OpenAI] OpenAI API error 401: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************jyAA. You can find your API key at https://platform.openai.com/account/api-keys.
+[2026-07-02 01:21:26] [OpenAI] OpenAI API error 401: Incorrect API key provided: sk-proj-********************************************************************************************************************************************************jyAA. You can find your API key at https://platform.openai.com/account/api-keys.
+[2026-07-02 02:19:06] [gateway] Summary AI returned malformed JSON: {
+  "summary": "The text provides a comprehensive overview of server-side development using PHP, structured into several key sections. It begins with an introduction to server-side development, comparing client and server scripts, and highlighting various server-side technologies such as ASP.NET, JSP, Node.js, Perl, PHP, Python, and Ruby on Rails. The text emphasizes the significance of PHP in server-side scripting and its dynamic typing capabilities. \n\nIn the section 'Quick Tour of PHP', the document explains PHP tags, which are essential for embedding PHP code within HTML. It details the syntax for comments in PHP, including single-line comments (starting with #), multi-line comments (enclosed within /* and */), and end-of-line comments (using //). The document also covers variable declaration, emphasizing that variables must begin with a dollar sign ($) and are dynamically typed, with right-to-left assignment exemplified by the statement $count = 42. \n\nThe text categorizes data types in PHP into several categories: Boolean (true/false), Integer (whole numbers), Float (decimal numbers), String (text), Array (collections of data), and Object (instances of classes). It also discusses string escaping techniques, such as using \\ for a backslash and \$ for a dollar sign. The use of the define() function for constants is introduced, along with the convention of using uppercase letters for constant names. \n\nThe 'Writing to Output' section explains the echo() function for outputting strings, including concatenation using the period (.) operator. The document provides examples of variable naming conventions, stating that variable names cannot contain spaces, begin with a number, or use reserved keywords. \n\nIn the 'Program Control' section, the document elaborates on decision-making statements such as if, else if, and switch-case structures. It provides examples of using if statements to set greetings based on the time of day and using switch statements to determine the type of art. The while and do-while loops are also discussed, illustrating how to iterate through a block of code. The for loop is introduced with an example that increments a count by 5 until it reaches 100. \n\nThe section on functions outlines how to define and use functions in PHP, including return type declarations and the use of parameters. It explains how to create functions with default parameter values and the differences between passing parameters by value and by reference. The concept of variable scope is discussed, differentiating between local and global scope, and how to access global variables within functions using the global keyword. \n\nFinally, the text concludes with a summary of key terms related to server-side development, including ASP, CGI, data types, database management systems, and user-defined functions. This summary encapsulates the essential concepts and terminology relevant to understanding server-side development with PHP.",
+  "key_points": [
+    "Server-side development involves technologies like ASP.NET, JSP, Node.js, Perl, PHP, Python, and Ruby on Rails.",
+    "PHP code is embedded within HTML using PHP tags, which start with <?php and end with ?>.",
+    "Comments in PHP can be single-line (#), multi-line (/* ... */), or end-of-line (//).",
+    "Variables in PHP must start with a dollar sign ($) and are dynamically typed.",
+    "Data types in PHP include Boolean, Integer, Float, String, Array, and Object.",
+    "String escaping in PHP allows for special characters like newline (\n) and dollar sign (\$).",
+    "Constants in PHP are defined using the define() function and are conventionally in uppercase.",
+    "The echo() function is used for outputting strings, and concatenation is done with the period (.) operator.",
+    "Variable names cannot contain spaces, start with a number, or use reserved keywords.",
+    "Control structures in PHP include if statements, switch-case statements, and loops (while, do-while, for).",
+    "Functions can have return type declarations and parameters, with default values for parameters.",
+    "Parameters can be passed by value or by reference, affecting how variables are modified within functions.",
+    "Variable scope in PHP differentiates between local and global variables, with global variables accessed using the global keyword.",
+    "Key terms related to server-side development include ASP, CGI, data types, and user-defined functions."
+  ]
+}
+[2026-07-02 02:19:38] [gateway] Summary AI returned malformed JSON: {
+  "summary": "The document titled 'Error Handling and Validation' consists of lessons focused on understanding errors and exceptions in PHP, error reporting, handling errors and exceptions, using regular expressions, validating user input, and the appropriate locations for performing validation. The lessons are structured to provide a comprehensive overview of these topics, emphasizing the importance of proper error handling and validation in programming.\n\nIn the section 'What Are Errors and Exceptions?', the document defines expected errors, warnings, and fatal errors, categorizing them into different types. It elaborates on exceptions, which are objects of type Exception used with the try...catch construct to manage runtime errors effectively. This section serves as a foundation for understanding how to handle errors gracefully in PHP applications.\n\nThe 'PHP Error Reporting' section discusses various settings that control error reporting behavior in PHP. The 'error_reporting' function specifies which types of errors should be reported, while 'ini_set' can be used to configure settings such as 'log_errors' and 'display_errors'. For example, 'ini_set('log_errors','1');' enables error logging, and 'ini_set('display_errors','0');' prevents error messages from being displayed in the browser. These settings can also be configured in the php.ini file, ensuring that developers can customize error reporting based on their needs.\n\nIn 'PHP Error and Exception Handling', the document provides examples of procedural and object-oriented error handling. It illustrates how to establish a database connection using mysqli_connect and handle potential connection errors. The procedural error handling example checks for connection errors and allows for error handling logic to be executed if an error occurs. The object-oriented example demonstrates how to throw exceptions and catch them using a try-catch block, providing a means to manage exceptions effectively while also ensuring that cleanup code can be executed in the 'finally' block.\n\nThe section on 'Regular Expressions' introduces the concept of regular expressions as a powerful tool for pattern matching in strings. It defines literals and metacharacters, explaining how these components can be combined to create complex expressions. The document outlines various syntax patterns, such as '^' for the start of a string and '$' for the end, as well as special character classes like '\d' for digits and '\w' for word characters. It also provides an extended example of a regular expression that validates a specific phone number format.\n\n'Validating User Input' discusses the importance of ensuring that user input meets certain criteria, including required information, correct data types, and proper formats. The document emphasizes the need for various types of input validation, such as comparison checks, range checks, and custom validations. It also highlights strategies for reducing validation errors, including providing clear notifications to users, utilizing tool tips, and implementing input masks to guide user input effectively.\n\nFinally, the section 'Where to Perform Validation' distinguishes between client-side and server-side validation. While client-side validation can reduce server load, it can also be bypassed, making server-side validation using PHP essential for ensuring data integrity and security. The document concludes with key terms related to error handling and validation, reinforcing the concepts covered throughout the lessons.",
+  "key_points": [
+    "Errors can be categorized into expected errors, warnings, and fatal errors.",
+    "Exceptions are objects of type Exception used with try...catch for runtime error management.",
+    "The error_reporting function specifies which types of errors to report.",
+    "Settings like log_errors and display_errors can be configured using ini_set.",
+    "Procedural error handling can check for connection errors using mysqli_connect.",
+    "Object-oriented error handling allows throwing and catching exceptions.",
+    "Regular expressions are used for pattern matching in strings.",
+    "Metacharacters and literals are essential components of regular expressions.",
+    "Regular expression syntax includes special characters like ^, $, \d, and \w.",
+    "User input validation includes checks for required information and correct formats.",
+    "Strategies to reduce validation errors include providing user notifications and tool tips.",
+    "Client-side validation can reduce server load but is not foolproof.",
+    "Server-side validation using PHP is crucial for data integrity."
+  ]
+}

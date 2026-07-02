@@ -1,0 +1,71 @@
+# STUDIZ — Python dependency manifest
+# ------------------------------------
+# Install: pip install -r requirements.txt
+#
+# VERSION STRATEGY
+# ----------------
+# The `~=` (compatible release) specifier pins the major and minor version
+# while allowing patch updates, e.g. `~=1.24.0` allows 1.24.1, 1.24.2 …
+# but NOT 1.25.0 or 2.0.0.  This is the correct balance for a project
+# without a CI pipeline: you get security patches automatically but no
+# breaking changes sneak in.
+#
+# AFTER DEPLOYING TO THE VPS
+# ---------------------------
+# Once you have installed these on the server, run:
+#
+#   pip freeze > requirements-lock.txt
+#
+# Commit requirements-lock.txt alongside this file.  It captures the
+# exact installed versions (including transitive deps of these packages)
+# so you can reproduce the exact same environment on a new server.
+#
+# AUDITING FOR VULNERABILITIES
+# ----------------------------
+# Install pip-audit and run it periodically (or in CI):
+#
+#   pip install pip-audit
+#   pip-audit -r requirements.txt
+#
+# pip-audit checks PyPI's advisory database for CVEs in each package.
+# Pillow and pymupdf in particular have had past CVEs — keep them current.
+
+# ── PDF parsing ──────────────────────────────────────────────────────────────
+# PyMuPDF wraps MuPDF (a C library). MuPDF has had historical buffer-overflow
+# CVEs; always run the latest compatible version.
+PyMuPDF~=1.27.0
+
+# ── OCR (text from scanned images / scanned PDFs) ───────────────────────────
+# pytesseract is a Python wrapper; the actual OCR engine is the system
+# Tesseract binary (apt install tesseract-ocr on the VPS).
+pytesseract~=0.3.13
+
+# ── Image processing ─────────────────────────────────────────────────────────
+# Pillow has the most active CVE history of any package in this list — it
+# parses untrusted user-uploaded images and has had buffer overflows in BMP,
+# TIFF, PCX, and GIF parsers.  Keep this at the latest patch at all times.
+# Run `pip-audit -r requirements.txt` before every production deploy.
+Pillow~=12.2.0
+
+# ── Word document parsing (.docx) ────────────────────────────────────────────
+# IMPORTANT: the install name is `python-docx` (with hyphen).
+# A separate package called `docx` exists on PyPI (last updated 2015, unmaintained).
+# Never run `pip install docx` — always use `pip install python-docx`.
+python-docx~=1.2.0
+
+# ── PowerPoint parsing (.pptx) ───────────────────────────────────────────────
+python-pptx~=1.0.0
+
+# ── Excel parsing (.xlsx) ────────────────────────────────────────────────────
+# openpyxl processes untrusted user-uploaded workbooks; malformed files can
+# cause high CPU/memory use (DoS risk).  Keep patched.
+openpyxl~=3.1.5
+
+# ── Excel parsing (.xls — legacy format) ─────────────────────────────────────
+# xlrd 2.x supports ONLY the legacy .xls binary format (it deliberately
+# dropped .xlsx support in v2.0 to reduce attack surface).
+# The codebase correctly uses xlrd only for .xls and openpyxl for .xlsx.
+# xlrd 2.0.1 was released in 2020 and has had no releases since — it is
+# functionally complete and stable for this narrow use case.
+# Pin to >=2.0.1 to ensure the pre-2.0 .xlsx-parsing CVEs are not present.
+xlrd>=2.0.2,<3.0.0
