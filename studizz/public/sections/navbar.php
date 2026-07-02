@@ -5,25 +5,7 @@
 <header class="lnr-nav" id="lnr-nav">
   <div class="lnr-nav-inner">
 
-    <!-- LEFT: Logo -->
-    <div class="lnr-nav-left">
-      <a class="lnr-nav-logo" href="#" data-page="home" aria-label="Studizz home">
-        <!--
-          ╔══════════════════════════════════════════╗
-          ║  LOGO PLACEHOLDER                        ║
-          ║  Replace the src attribute below with    ║
-          ║  the path to your own logo image file.   ║
-          ║  Example: src="/public/assets/logo.png"  ║
-          ║  The alt text is already set for you.    ║
-          ╚══════════════════════════════════════════╝
-        -->
-        <img
-          src=""
-          alt="Studizz logo"
-          class="lnr-logo-img"
-          id="site-logo"
-          onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'"
-        />
+
         <!-- Text fallback shown when no logo image is set -->
         <span class="lnr-logo-fallback" id="logo-fallback">
           <span class="lnr-logo-mark"></span>
