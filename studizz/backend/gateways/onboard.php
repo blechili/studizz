@@ -43,8 +43,16 @@ set_exception_handler(static function (Throwable $e): void {
         ERROR_LOG_FILE
     );
     if (!headers_sent()) http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'An unexpected error occurred. Please try again.']);
+    $response = ['ok' => false, 'error' => 'An unexpected error occurred. Please try again.'];
+    // TEMPORARY DEBUG: surface the real exception in the JSON response itself
+    // when STUDIZZ_ENV=dev, since the on-disk error log isn't reachable from
+    // the Railway dashboard. Revert this once the Railway DB issue is found.
+    if (STUDIZZ_ENV === 'dev') {
+        $response['debug'] = get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+    }
+    echo json_encode($response);
 });
+
 
 // Allow only POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
