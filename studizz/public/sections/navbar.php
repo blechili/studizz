@@ -6,13 +6,7 @@
   <div class="lnr-nav-inner">
 
 
-        <!-- Text fallback shown when no logo image is set -->
-        <span class="lnr-logo-fallback" id="logo-fallback">
-          <span class="lnr-logo-mark"></span>
-          Studizz
-        </span>
-      </a>
-    </div>
+
 
     <!-- CENTRE: Nav links -->
     <nav aria-label="Main navigation">
